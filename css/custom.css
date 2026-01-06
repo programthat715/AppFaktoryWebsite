@@ -1,0 +1,213 @@
+/* AppFaktory Landing Page - Custom Styles */
+/* Matches AdminUI theme: dark background, blue/pink/purple accents */
+
+/* ===== Base Styles ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ===== Glass Effect ===== */
+.glass-effect {
+    background: rgba(36, 43, 61, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+    background: rgba(36, 43, 61, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Gradient Text ===== */
+.gradient-text {
+    background: linear-gradient(135deg, #4461F2 0%, #8B5CF6 50%, #FF3E62 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #4461F2 0%, #3651D4 100%);
+    color: #f8fafc;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(68, 97, 242, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(68, 97, 242, 0.5);
+}
+
+.btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== Animated Background Blobs ===== */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: blob 8s infinite;
+}
+
+.blob-blue {
+    width: 400px;
+    height: 400px;
+    background: #4461F2;
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.blob-purple {
+    width: 350px;
+    height: 350px;
+    background: #8B5CF6;
+    top: 30%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.blob-pink {
+    width: 300px;
+    height: 300px;
+    background: #FF3E62;
+    bottom: 20%;
+    left: 30%;
+    animation-delay: 4s;
+}
+
+@keyframes blob {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    50% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+    75% {
+        transform: translate(20px, 30px) scale(1.05);
+    }
+}
+
+/* ===== Feature Cards ===== */
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(68, 97, 242, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== How It Works Steps ===== */
+.step-number {
+    position: absolute;
+    top: -20px;
+    left: 24px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #4461F2 0%, #8B5CF6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    z-index: 10;
+    box-shadow: 0 4px 14px rgba(68, 97, 242, 0.4);
+}
+
+/* ===== Pricing Cards ===== */
+.pricing-card {
+    transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.pricing-popular {
+    transform: scale(1.02);
+}
+
+.pricing-popular:hover {
+    transform: scale(1.02) translateY(-4px);
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+    .blob {
+        opacity: 0.3;
+    }
+
+    .blob-blue {
+        width: 250px;
+        height: 250px;
+    }
+
+    .blob-purple {
+        width: 200px;
+        height: 200px;
+    }
+
+    .blob-pink {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1f2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* ===== Selection Color ===== */
+::selection {
+    background: rgba(68, 97, 242, 0.3);
+    color: #f8fafc;
+}
+
+/* ===== Focus States for Accessibility ===== */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #4461F2;
+    outline-offset: 2px;
+}

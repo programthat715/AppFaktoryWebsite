@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AppFaktory - Build and deploy AI agents in minutes. Multi-tenant platform for creating custom AI assistants with your own branding.">
+    <meta name="keywords" content="AI agents, chatbots, multi-tenant, AI platform, custom AI assistants">
+    <meta property="og:title" content="AppFaktory - AI Agent Platform">
+    <meta property="og:description" content="Build and deploy AI agents in minutes. Multi-tenant platform for creating custom AI assistants.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://easyagent.app-faktory.com">
+    <title>AppFaktory - Build AI Agents in Minutes</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#1a1f2e',
+                        foreground: '#f8fafc',
+                        card: '#242b3d',
+                        'card-hover': '#2d3548',
+                        primary: '#4461F2',
+                        'primary-hover': '#3651D4',
+                        secondary: '#FF3E62',
+                        'secondary-hover': '#E62E54',
+                        muted: '#2d3548',
+                        'muted-foreground': '#94a3b8',
+                        border: '#374151',
+                        accent: '#8B5CF6',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body class="bg-background text-foreground antialiased">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <img src="assets/images/logo.png" alt="AppFaktory" class="h-10 w-10">
+                    <span class="text-xl font-bold text-foreground">AppFaktory</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-muted-foreground hover:text-foreground transition-colors">Features</a>
+                    <a href="#how-it-works" class="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
+                    <a href="#pricing" class="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+                    <a href="https://admin.app-faktory.com" class="text-muted-foreground hover:text-foreground transition-colors">Sign In</a>
+                    <a href="https://admin.app-faktory.com/register" class="btn-primary px-5 py-2 rounded-lg font-medium">Get Started</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-card transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-card border-t border-border">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#features" class="block text-muted-foreground hover:text-foreground transition-colors py-2">Features</a>
+                <a href="#how-it-works" class="block text-muted-foreground hover:text-foreground transition-colors py-2">How It Works</a>
+                <a href="#pricing" class="block text-muted-foreground hover:text-foreground transition-colors py-2">Pricing</a>
+                <a href="https://admin.app-faktory.com" class="block text-muted-foreground hover:text-foreground transition-colors py-2">Sign In</a>
+                <a href="https://admin.app-faktory.com/register" class="block btn-primary px-5 py-2 rounded-lg font-medium text-center">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+        <!-- Animated Background Blobs -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="blob blob-blue"></div>
+            <div class="blob blob-purple"></div>
+            <div class="blob blob-pink"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+                Build <span class="gradient-text">AI Agents</span> in Minutes
+            </h1>
+            <p class="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
+                Create custom AI assistants for your business. No coding required.
+                Deploy instantly and share with your team or customers.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://admin.app-faktory.com/register" class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold w-full sm:w-auto">
+                    Start Free Trial
+                </a>
+                <a href="#how-it-works" class="btn-secondary px-8 py-4 rounded-xl text-lg font-semibold w-full sm:w-auto">
+                    See How It Works
+                </a>
+            </div>
+            <p class="mt-6 text-muted-foreground text-sm">
+                No credit card required. 7-day free trial with 25 credits/day.
+            </p>
+
+            <!-- Hero Image Placeholder -->
+            <div class="mt-12 relative">
+                <div class="glass-card rounded-2xl p-4 max-w-4xl mx-auto">
+                    <div class="bg-card rounded-xl aspect-video flex items-center justify-center border border-border">
+                        <div class="text-center p-8">
+                            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <p class="text-muted-foreground">Dashboard Preview Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Everything You Need to Build <span class="gradient-text">AI Agents</span>
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Powerful features to help you create, deploy, and manage AI assistants at scale.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Instant Deployment</h3>
+                    <p class="text-muted-foreground">
+                        Create an AI agent and get a shareable URL in seconds. No infrastructure to manage.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Custom Prompts</h3>
+                    <p class="text-muted-foreground">
+                        Define your agent's personality, knowledge, and behavior with custom system prompts.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Multi-Tenant</h3>
+                    <p class="text-muted-foreground">
+                        Perfect for agencies and SaaS. Create isolated workspaces for each client or team.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Bring Your Own Keys</h3>
+                    <p class="text-muted-foreground">
+                        Use your own LLM API keys for full control and 50% lower costs. Or use ours for convenience.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Vision Capable</h3>
+                    <p class="text-muted-foreground">
+                        Upload images for analysis. Perfect for visual AI assistants that can see and understand.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card glass-card rounded-2xl p-6">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Usage Analytics</h3>
+                    <p class="text-muted-foreground">
+                        Track conversations, token usage, and costs. Understand how your agents are being used.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-24 bg-card/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Get Started in <span class="gradient-text">3 Simple Steps</span>
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    From sign-up to deployed AI agent in under 5 minutes.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="step-number">1</div>
+                    <div class="glass-card rounded-2xl p-6 pt-12">
+                        <h3 class="text-xl font-semibold mb-3">Create Your Agent</h3>
+                        <p class="text-muted-foreground">
+                            Give your agent a name, description, and avatar. Define its personality with a custom system prompt.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative">
+                    <div class="step-number">2</div>
+                    <div class="glass-card rounded-2xl p-6 pt-12">
+                        <h3 class="text-xl font-semibold mb-3">Choose Your Model</h3>
+                        <p class="text-muted-foreground">
+                            Select from top AI models: GPT-4, Claude, Gemini, and more. Use our keys or bring your own.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative">
+                    <div class="step-number">3</div>
+                    <div class="glass-card rounded-2xl p-6 pt-12">
+                        <h3 class="text-xl font-semibold mb-3">Share & Deploy</h3>
+                        <p class="text-muted-foreground">
+                            Get a shareable URL instantly. Invite users with invite codes or make it publicly accessible.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Simple, Transparent <span class="gradient-text">Pricing</span>
+                </h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Start free, scale as you grow. Pay only for what you use.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Trial -->
+                <div class="pricing-card glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-2">Trial</h3>
+                    <div class="mb-4">
+                        <span class="text-3xl font-bold">Free</span>
+                        <span class="text-muted-foreground">/7 days</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            25 credits/day
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            1 agent
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Gemini 2.0 Flash
+                        </li>
+                    </ul>
+                    <a href="https://admin.app-faktory.com/register" class="block w-full btn-secondary py-2 rounded-lg text-center font-medium">
+                        Start Trial
+                    </a>
+                </div>
+
+                <!-- Starter -->
+                <div class="pricing-card glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-2">Starter</h3>
+                    <div class="mb-4">
+                        <span class="text-3xl font-bold">$29</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            5,000 credits/month
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            1 agent
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            All models
+                        </li>
+                    </ul>
+                    <a href="https://admin.app-faktory.com/register" class="block w-full btn-secondary py-2 rounded-lg text-center font-medium">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Pro - Popular -->
+                <div class="pricing-card pricing-popular glass-card rounded-2xl p-6 relative border-2 border-primary">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                        POPULAR
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Pro</h3>
+                    <div class="mb-4">
+                        <span class="text-3xl font-bold">$79</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            25,000 credits/month
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            5 agents
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            10 team members
+                        </li>
+                    </ul>
+                    <a href="https://admin.app-faktory.com/register" class="block w-full btn-primary py-2 rounded-lg text-center font-medium">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Business -->
+                <div class="pricing-card glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-2">Business</h3>
+                    <div class="mb-4">
+                        <span class="text-3xl font-bold">$199</span>
+                        <span class="text-muted-foreground">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-6 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            100,000 credits/month
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            10 agents
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            50 team members
+                        </li>
+                    </ul>
+                    <a href="https://admin.app-faktory.com/register" class="block w-full btn-secondary py-2 rounded-lg text-center font-medium">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-center text-muted-foreground mt-8">
+                Need more? <a href="mailto:contact@app-faktory.com" class="text-primary hover:underline">Contact us</a> for Enterprise pricing.
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 bg-card/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">
+                Ready to Build Your <span class="gradient-text">AI Agent</span>?
+            </h2>
+            <p class="text-xl text-muted-foreground mb-8">
+                Join hundreds of businesses using AppFaktory to create custom AI assistants.
+                Start your free trial today.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://admin.app-faktory.com/register" class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold w-full sm:w-auto">
+                    Start Free Trial
+                </a>
+                <a href="https://app.app-faktory.com" class="btn-secondary px-8 py-4 rounded-xl text-lg font-semibold w-full sm:w-auto">
+                    Try Demo Agent
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-3">
+                    <img src="assets/images/logo.png" alt="AppFaktory" class="h-8 w-8">
+                    <span class="text-lg font-bold">AppFaktory</span>
+                </div>
+
+                <div class="flex items-center gap-6 text-muted-foreground text-sm">
+                    <a href="mailto:contact@app-faktory.com" class="hover:text-foreground transition-colors">Contact</a>
+                    <a href="#" class="hover:text-foreground transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-foreground transition-colors">Terms</a>
+                </div>
+
+                <p class="text-muted-foreground text-sm">
+                    &copy; 2025 AppFaktory. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
