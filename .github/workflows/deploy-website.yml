@@ -6,42 +6,76 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: programthat715/appfaktory-website
+
 jobs:
-  deploy:
-    name: Deploy to DigitalOcean
+  build-and-deploy:
+    name: Build and Deploy to DigitalOcean
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Deploy via SSH
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deploy to DigitalOcean
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
+          envs: GITHUB_TOKEN
           script_stop: true
           script: |
             set -e
-            echo "Starting Website deployment..."
-            cd /home/appuser/appfaktory/website
+            echo "Starting Website container deployment..."
+            cd /home/appuser/appfaktory/api
 
-            echo "Pulling latest code..."
-            git fetch origin
-            git reset --hard origin/main
+            echo "Logging into GHCR..."
+            echo "$GITHUB_TOKEN" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            echo "Reloading Caddy..."
-            sudo systemctl reload caddy
+            echo "Pulling latest image..."
+            docker pull ghcr.io/programthat715/appfaktory-website:latest
 
-            echo "Website deployment completed!"
+            echo "Restarting container..."
+            docker compose -f docker-compose.digitalocean.yml up -d website
+
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "Website container deployment completed!"
 
       - name: Verify deployment
         run: |
           echo "Verifying Website deployment..."
-          sleep 5
+          sleep 10
 
-          if curl -f -s -I https://easyagent.app-faktory.com > /dev/null 2>&1; then
-            echo "Website is accessible at https://easyagent.app-faktory.com"
+          if curl -f -s https://easyagent.app-faktory.com/health; then
+            echo "Website health check passed!"
           else
-            echo "Website health check pending"
+            echo "Website health check pending - container may still be starting"
           fi
 
       - name: Deployment Summary
@@ -50,6 +84,7 @@ jobs:
           echo "## Website Deployment Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**URL:** https://easyagent.app-faktory.com" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ job.status }}" = "success" ]; then
             echo "Deployment completed successfully!" >> $GITHUB_STEP_SUMMARY
