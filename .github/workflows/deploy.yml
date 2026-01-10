@@ -1,177 +1,47 @@
-name: Build and Deploy Website
+name: Deploy Website
 
-# Trigger on push to main branch or manual workflow dispatch
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      skip_deploy:
-        description: 'Skip deployment (build only)'
-        required: false
-        default: false
-        type: boolean
-
-# Environment variables
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/appfaktory-website
-  AWS_REGION: us-east-2
-  EC2_INSTANCE_ID: i-09bdef86d454c7846
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
-          platforms: linux/amd64
-
-      - name: Build Summary
-        run: |
-          echo "## Website Build Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Image:** \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Tags:** ${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Image pushed to registry" >> $GITHUB_STEP_SUMMARY
-
   deploy:
-    name: Deploy Website to EC2 via SSM
-    needs: build-and-push
-    if: ${{ github.event.inputs.skip_deploy != 'true' }}
+    name: Deploy to DigitalOcean
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -e
+            echo "Starting Website deployment..."
+            cd /home/appuser/appfaktory/website
 
-      - name: Verify EC2 instance is online in SSM
-        run: |
-          echo "Checking if EC2 instance is registered with SSM..."
-          STATUS=$(aws ssm describe-instance-information \
-            --filters "Key=InstanceIds,Values=${{ env.EC2_INSTANCE_ID }}" \
-            --query "InstanceInformationList[0].PingStatus" \
-            --output text)
-          echo "Instance status: $STATUS"
-          if [ "$STATUS" != "Online" ]; then
-            echo "EC2 instance is not online in SSM"
-            exit 1
-          fi
+            echo "Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
 
-      - name: Deploy Website to EC2 via SSM
-        run: |
-          echo "Deploying Website container to EC2..."
+            echo "Reloading Caddy..."
+            sudo systemctl reload caddy
 
-          COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "${{ env.EC2_INSTANCE_ID }}" \
-            --document-name "AWS-RunShellScript" \
-            --comment "Deploy AppFaktory Website" \
-            --parameters 'commands=[
-              "set -e",
-              "export HOME=/home/ubuntu",
-              "echo \"Starting Website deployment...\"",
-              "cd /home/ubuntu/appfaktory",
-              "echo \"Pulling latest Website image...\"",
-              "docker pull ghcr.io/${{ github.repository_owner }}/appfaktory-website:latest",
-              "echo \"Restarting Website container...\"",
-              "docker compose -f docker-compose.ec2.yml up -d website",
-              "echo \"Reloading Caddy to pick up any config changes...\"",
-              "docker compose -f docker-compose.ec2.yml exec -T caddy caddy reload --config /etc/caddy/Caddyfile || true",
-              "echo \"Cleaning up old images...\"",
-              "docker image prune -f",
-              "echo \"Website deployment completed!\""
-            ]' \
-            --query "Command.CommandId" \
-            --output text)
+            echo "Website deployment completed!"
 
-          echo "Deployment Command ID: $COMMAND_ID"
-
-          # Wait for command to start
-          sleep 5
-
-          # Poll for command completion (max 3 minutes)
-          for i in {1..36}; do
-            STATUS=$(aws ssm get-command-invocation \
-              --command-id "$COMMAND_ID" \
-              --instance-id "${{ env.EC2_INSTANCE_ID }}" \
-              --query "Status" \
-              --output text)
-
-            echo "Command status: $STATUS"
-
-            if [ "$STATUS" = "Success" ]; then
-              echo "Deployment command completed successfully!"
-              aws ssm get-command-invocation \
-                --command-id "$COMMAND_ID" \
-                --instance-id "${{ env.EC2_INSTANCE_ID }}" \
-                --query "StandardOutputContent" \
-                --output text
-              break
-            elif [ "$STATUS" = "Failed" ] || [ "$STATUS" = "Cancelled" ] || [ "$STATUS" = "TimedOut" ]; then
-              echo "Deployment command failed with status: $STATUS"
-              aws ssm get-command-invocation \
-                --command-id "$COMMAND_ID" \
-                --instance-id "${{ env.EC2_INSTANCE_ID }}" \
-                --query "StandardErrorContent" \
-                --output text
-              exit 1
-            fi
-
-            sleep 5
-          done
-
-      - name: Verify Website deployment
+      - name: Verify deployment
         run: |
           echo "Verifying Website deployment..."
           sleep 5
 
-          # Check Website health
-          if curl -f -s https://easyagent.app-faktory.com/health > /dev/null 2>&1; then
+          if curl -f -s -I https://easyagent.app-faktory.com > /dev/null 2>&1; then
             echo "Website is accessible at https://easyagent.app-faktory.com"
           else
-            echo "Website health check pending (container may still be starting)"
+            echo "Website health check pending"
           fi
 
       - name: Deployment Summary
