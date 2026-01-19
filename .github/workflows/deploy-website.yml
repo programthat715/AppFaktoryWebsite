@@ -59,7 +59,10 @@ jobs:
             echo "Pulling latest image..."
             docker pull ghcr.io/programthat715/appfaktory-website:latest
 
-            echo "Restarting container..."
+            echo "Stopping existing container and cleaning up orphans..."
+            docker compose -f docker-compose.digitalocean.yml down --remove-orphans website || true
+
+            echo "Starting container..."
             docker compose -f docker-compose.digitalocean.yml up -d website
 
             echo "Cleaning up old images..."
